@@ -1,91 +1,56 @@
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCTmbYEko-qYaLpX_N4RrZzDy8w76G9pC4",
-  authDomain: "sorteio-tattoo-gratis.firebaseapp.com",
-  databaseURL: "https://sorteio-tattoo-gratis-default-rtdb.firebaseio.com",
-  projectId: "sorteio-tattoo-gratis",
-  storageBucket: "sorteio-tattoo-gratis.appspot.com",
-  messagingSenderId: "278546007465",
-  appId: "1:278546007465:web:de17398bc72da535fb70b8"
-};
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Sorteio Genário Santi Tattoo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container" id="form-container">
+    <h1>Sorteio Genário Santi Tattoo</h1>
+    <p>Faça seu cadastro e participe do nosso sorteio totalmente gratuito.</p>
+    <form id="cadastro-form">
+      <input type="text" id="nome" placeholder="Nome completo" required />
+      <input type="tel" id="telefone" placeholder="Telefone" required />
+      <input type="text" id="instagram" placeholder="Instagram" required />
+      <input type="text" id="cpf" placeholder="CPF" required />
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+      <div class="upload-section">
+        <p class="explicacao">
+          Para participar do sorteio, é necessário compartilhar uma das publicações do perfil abaixo nos seus stories do Instagram e escrever algo positivo sobre o trabalho.
+        </p>
+        <p class="exemplo"><strong>Exemplos de frase:</strong><br>
+          1. O melhor de Inajá<br>
+          2. O melhor tatuador da região<br>
+          3. Ou escolha uma frase da sua preferência
+        </p>
+        <a href="https://instagram.com/genariosantitattoo" target="_blank" class="insta-link">
+          👉 Visite meu perfil no Instagram @genariosantitattoo
+        </a>
+        <label for="foto">Envie um print dos seus stories como comprovação:</label>
+        <input type="file" id="foto" accept="image/*" required>
+      </div>
 
-const form = document.getElementById("cadastro-form");
-const formContainer = document.getElementById("form-container");
-const numeroContainer = document.getElementById("numero-container");
-const confirmacaoContainer = document.getElementById("confirmacao-container");
-const numerosDiv = document.getElementById("numeros");
-const numeroEscolhidoDiv = document.getElementById("numero-escolhido");
+      <button type="submit">Avançar</button>
+    </form>
+  </div>
 
-form.addEventListener("submit", function(e) {
-  e.preventDefault();
+  <div class="container hidden" id="numero-container">
+    <h2>Escolha seu número</h2>
+    <div id="numeros"></div>
+  </div>
 
-  const nome = document.getElementById("nome").value.trim();
-  const telefone = document.getElementById("telefone").value.trim();
-  const instagram = document.getElementById("instagram").value.trim();
-  const cpf = document.getElementById("cpf").value.trim();
+  <div class="container hidden" id="confirmacao-container">
+    <h2>Parabéns, você está participando do sorteio!</h2>
+    <div id="numero-escolhido"></div>
+    <p class="boa-sorte">Boa sorte!</p>
+  </div>
 
-  if (!validarCPF(cpf)) {
-    alert("CPF inválido.");
-    return;
-  }
-
-  db.ref("participantes").orderByChild("telefone").equalTo(telefone).once("value", snapshot => {
-    if (snapshot.exists()) return alert("Esse telefone já foi usado.");
-
-    db.ref("participantes").orderByChild("instagram").equalTo(instagram).once("value", snap => {
-      if (snap.exists()) return alert("Esse Instagram já foi usado.");
-
-      db.ref("participantes").orderByChild("cpf").equalTo(cpf).once("value", snap2 => {
-        if (snap2.exists()) return alert("Esse CPF já foi usado.");
-
-        formContainer.classList.add("hidden");
-        numeroContainer.classList.remove("hidden");
-        carregarNumeros({ nome, telefone, instagram, cpf });
-      });
-    });
-  });
-});
-
-function carregarNumeros(dados) {
-  numerosDiv.innerHTML = "";
-  db.ref("participantes").once("value", snapshot => {
-    let ocupados = {};
-    snapshot.forEach(child => ocupados[child.val().numero] = true);
-
-    for (let i = 1; i <= 100; i++) {
-      const btn = document.createElement("div");
-      btn.classList.add("numero");
-      btn.textContent = i;
-      if (ocupados[i]) {
-        btn.classList.add("ocupado");
-      } else {
-        btn.addEventListener("click", () => {
-          const novoRef = db.ref("participantes").push();
-          novoRef.set({ ...dados, numero: i });
-          numeroContainer.classList.add("hidden");
-          confirmacaoContainer.classList.remove("hidden");
-          numeroEscolhidoDiv.textContent = i;
-        });
-      }
-      numerosDiv.appendChild(btn);
-    }
-  });
-}
-
-function validarCPF(cpf) {
-  cpf = cpf.replace(/[^\d]+/g, "");
-  if (cpf.length !== 11 || /^(\d)+$/.test(cpf)) return false;
-  let soma = 0;
-  for (let i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i)) * (10 - i);
-  let resto = (soma * 10) % 11;
-  if (resto === 10 || resto === 11) resto = 0;
-  if (resto !== parseInt(cpf.charAt(9))) return false;
-  soma = 0;
-  for (let i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i)) * (11 - i);
-  resto = (soma * 10) % 11;
-  if (resto === 10 || resto === 11) resto = 0;
-  return resto === parseInt(cpf.charAt(10));
-}
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
