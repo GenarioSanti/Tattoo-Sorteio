@@ -1,73 +1,55 @@
-
 body {
-  font-family: Arial, sans-serif;
-  background: #121212;
-  color: #f0f0f0;
+  background-color: #121212;
+  color: #fff;
+  font-family: sans-serif;
   text-align: center;
   padding: 20px;
 }
-.container {
-  max-width: 500px;
-  margin: auto;
-  background-color: #1e1e1e;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+
+form {
+  margin-top: 20px;
 }
+
 input {
   display: block;
-  width: 100%;
   margin: 10px auto;
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 5px;
+  padding: 10px;
+  border-radius: 6px;
   border: none;
-  background-color: #2b2b2b;
-  color: #fff;
+  width: 80%;
+  max-width: 300px;
 }
+
 button {
-  padding: 12px 20px;
-  background-color: #28a745;
-  color: white;
+  margin: 5px;
+  padding: 10px 15px;
   border: none;
-  font-size: 16px;
-  border-radius: 5px;
+  border-radius: 8px;
+  background-color: #28a745;
+  color: #fff;
+  font-weight: bold;
   cursor: pointer;
 }
+
 button:hover {
   background-color: #218838;
 }
-.numeros-container {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 10px;
-}
-.numero {
-  padding: 15px;
-  background-color: #333;
-  border-radius: 50%;
-  cursor: pointer;
-  color: white;
-}
-.numero:hover {
-  background-color: #555;
-}
-.numero.selecionado {
+
+button.inativo {
   background-color: gray;
-  pointer-events: none;
-  color: white;
+  cursor: not-allowed;
 }
-.aviso {
-  margin-top: 10px;
-  font-size: 16px;
+
+#numerosContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
 }
-.menor {
-  font-size: 13px;
-  color: #bbb;
-}
-.erro {
-  color: #ff5555;
-  margin-top: 10px;
-  font-weight: bold;
+
+#numerosContainer button {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  font-size: 18px;
 }
