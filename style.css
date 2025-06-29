@@ -1,26 +1,41 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: #f5f5f5;
+  background: #121212;
+  color: #f0f0f0;
   text-align: center;
   padding: 20px;
 }
 .container {
   max-width: 500px;
   margin: auto;
+  background-color: #1e1e1e;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 input {
   display: block;
   width: 100%;
   margin: 10px auto;
-  padding: 10px;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #2b2b2b;
+  color: #fff;
 }
 button {
-  padding: 10px 20px;
-  background-color: #007b00;
+  padding: 12px 20px;
+  background-color: #28a745;
   color: white;
   border: none;
+  font-size: 16px;
+  border-radius: 5px;
   cursor: pointer;
+}
+button:hover {
+  background-color: #218838;
 }
 .numeros-container {
   margin-top: 20px;
@@ -30,12 +45,29 @@ button {
 }
 .numero {
   padding: 15px;
-  background-color: #ddd;
+  background-color: #333;
   border-radius: 50%;
   cursor: pointer;
+  color: white;
+}
+.numero:hover {
+  background-color: #555;
 }
 .numero.selecionado {
   background-color: gray;
   pointer-events: none;
   color: white;
+}
+.aviso {
+  margin-top: 10px;
+  font-size: 16px;
+}
+.menor {
+  font-size: 13px;
+  color: #bbb;
+}
+.erro {
+  color: #ff5555;
+  margin-top: 10px;
+  font-weight: bold;
 }
