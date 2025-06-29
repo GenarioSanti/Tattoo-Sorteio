@@ -1,23 +1,79 @@
+
 const firebaseConfig = {
   apiKey: "AIzaSyCTmbYEko-qYaLpX_N4RrZzDy8w76G9pC4",
   authDomain: "sorteio-tattoo-gratis.firebaseapp.com",
+  databaseURL: "https://sorteio-tattoo-gratis-default-rtdb.firebaseio.com",
   projectId: "sorteio-tattoo-gratis",
   storageBucket: "sorteio-tattoo-gratis.appspot.com",
   messagingSenderId: "278546007465",
-  appId: "1:278546007465:web:de17398bc72da535fb70b8",
-  measurementId: "G-X0BLWX5559",
-  databaseURL: "https://sorteio-tattoo-gratis-default-rtdb.firebaseio.com",
+  appId: "1:278546007465:web:de17398bc72da535fb70b8"
 };
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-const form = document.getElementById("form");
-const etapa1 = document.getElementById("etapa1");
-const etapa2 = document.getElementById("etapa2");
-const numerosContainer = document.getElementById("numerosContainer");
-const tituloEtapa2 = document.getElementById("tituloEtapa2");
-const mensagemFinal = document.getElementById("mensagemFinal");
+const form = document.getElementById("cadastro-form");
+const formContainer = document.getElementById("form-container");
+const numeroContainer = document.getElementById("numero-container");
+const confirmacaoContainer = document.getElementById("confirmacao-container");
+const numerosDiv = document.getElementById("numeros");
+const numeroEscolhidoDiv = document.getElementById("numero-escolhido");
+
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const nome = document.getElementById("nome").value.trim();
+  const telefone = document.getElementById("telefone").value.trim();
+  const instagram = document.getElementById("instagram").value.trim();
+  const cpf = document.getElementById("cpf").value.trim();
+
+  if (!validarCPF(cpf)) {
+    alert("CPF inválido.");
+    return;
+  }
+
+  db.ref("participantes").orderByChild("telefone").equalTo(telefone).once("value", snapshot => {
+    if (snapshot.exists()) return alert("Esse telefone já foi usado.");
+
+    db.ref("participantes").orderByChild("instagram").equalTo(instagram).once("value", snap => {
+      if (snap.exists()) return alert("Esse Instagram já foi usado.");
+
+      db.ref("participantes").orderByChild("cpf").equalTo(cpf).once("value", snap2 => {
+        if (snap2.exists()) return alert("Esse CPF já foi usado.");
+
+        formContainer.classList.add("hidden");
+        numeroContainer.classList.remove("hidden");
+        carregarNumeros({ nome, telefone, instagram, cpf });
+      });
+    });
+  });
+});
+
+function carregarNumeros(dados) {
+  numerosDiv.innerHTML = "";
+  db.ref("participantes").once("value", snapshot => {
+    let ocupados = {};
+    snapshot.forEach(child => ocupados[child.val().numero] = true);
+
+    for (let i = 1; i <= 100; i++) {
+      const btn = document.createElement("div");
+      btn.classList.add("numero");
+      btn.textContent = i;
+      if (ocupados[i]) {
+        btn.classList.add("ocupado");
+      } else {
+        btn.addEventListener("click", () => {
+          const novoRef = db.ref("participantes").push();
+          novoRef.set({ ...dados, numero: i });
+          numeroContainer.classList.add("hidden");
+          confirmacaoContainer.classList.remove("hidden");
+          numeroEscolhidoDiv.textContent = i;
+        });
+      }
+      numerosDiv.appendChild(btn);
+    }
+  });
+}
 
 function validarCPF(cpf) {
   cpf = cpf.replace(/[^\d]+/g, "");
@@ -32,66 +88,4 @@ function validarCPF(cpf) {
   resto = (soma * 10) % 11;
   if (resto === 10 || resto === 11) resto = 0;
   return resto === parseInt(cpf.charAt(10));
-}
-
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-  const nome = form.nome.value.trim();
-  const telefone = form.telefone.value.trim();
-  const instagram = form.instagram.value.trim();
-  const cpf = form.cpf.value.trim();
-
-  if (!validarCPF(cpf)) {
-    alert("CPF inválido.");
-    return;
-  }
-
-  db.ref("participantes").once("value", (snapshot) => {
-    const dados = snapshot.val();
-    for (let i in dados) {
-      const p = dados[i];
-      if (p.telefone === telefone || p.instagram === instagram || p.cpf === cpf) {
-        alert("Você já participou do sorteio.");
-        return;
-      }
-    }
-
-    etapa1.style.display = "none";
-    etapa2.style.display = "block";
-    gerarNumeros({ nome, telefone, instagram, cpf });
-  });
-});
-
-function gerarNumeros(participante) {
-  numerosContainer.innerHTML = "";
-  db.ref("participantes").once("value", (snapshot) => {
-    const ocupados = new Set();
-    snapshot.forEach((child) => {
-      ocupados.add(child.val().numero);
-    });
-
-    for (let i = 1; i <= 100; i++) {
-      const btn = document.createElement("button");
-      btn.textContent = i;
-      btn.disabled = ocupados.has(i);
-      if (ocupados.has(i)) btn.classList.add("inativo");
-
-      btn.addEventListener("click", () => {
-        btn.disabled = true;
-        btn.classList.add("inativo");
-        db.ref("participantes").push({
-          ...participante,
-          numero: i,
-        });
-        numerosContainer.innerHTML = "";
-        tituloEtapa2.style.display = "none";
-        mensagemFinal.innerHTML = `
-          <div class="parabens">Parabéns, você está participando do sorteio!</div>
-          <div class="numeroEscolhido">${i}</div>
-          <div class="boasorte">Boa sorte!</div>`;
-      });
-
-      numerosContainer.appendChild(btn);
-    }
-  });
 }
