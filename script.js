@@ -13,15 +13,34 @@ const db = firebase.database();
 
 const form = document.getElementById('formulario');
 const numerosDiv = document.getElementById('numeros');
+const erroDiv = document.getElementById('mensagem-erro');
 let dadosUsuario = {};
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
+  erroDiv.innerText = "";
+
   dadosUsuario = {
     nome: document.getElementById('nome').value,
     telefone: document.getElementById('telefone').value,
-    instagram: document.getElementById('instagram').value
+    instagram: document.getElementById('instagram').value,
+    rg: document.getElementById('rg').value
   };
+
+  const participantesSnapshot = await db.ref("participantes").once("value");
+  const participantes = participantesSnapshot.val() || {};
+  const telefoneLimpo = dadosUsuario.telefone.replace(/\D/g, "");
+
+  for (const id in participantes) {
+    const p = participantes[id];
+    if (p.telefone === dadosUsuario.telefone || 
+        p.instagram.toLowerCase() === dadosUsuario.instagram.toLowerCase() || 
+        p.rg === dadosUsuario.rg) {
+      erroDiv.innerText = "❌ Você já está participando do sorteio. Dados duplicados não são permitidos.";
+      return;
+    }
+  }
+
   form.style.display = 'none';
   numerosDiv.style.display = 'grid';
 
