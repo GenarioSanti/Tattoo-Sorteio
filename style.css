@@ -1,0 +1,41 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  text-align: center;
+  padding: 20px;
+}
+.container {
+  max-width: 500px;
+  margin: auto;
+}
+input {
+  display: block;
+  width: 100%;
+  margin: 10px auto;
+  padding: 10px;
+}
+button {
+  padding: 10px 20px;
+  background-color: #007b00;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.numeros-container {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 10px;
+}
+.numero {
+  padding: 15px;
+  background-color: #ddd;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.numero.selecionado {
+  background-color: gray;
+  pointer-events: none;
+  color: white;
+}

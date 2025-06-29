@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sorteio Genário Santi Tattoo</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>Sorteio Genário Santi Tattoo</h1>
+    <p>Faça seu cadastro e participe do nosso sorteio totalmente gratuito.</p>
+    <form id="formulario">
+      <input type="text" id="nome" placeholder="Nome completo" required/>
+      <input type="tel" id="telefone" placeholder="Telefone" required/>
+      <input type="text" id="instagram" placeholder="@Instagram" required/>
+      <button type="submit">Avançar</button>
+    </form>
+    <div id="numeros" class="numeros-container" style="display:none;"></div>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
