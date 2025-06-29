@@ -1,33 +1,38 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Sorteio Genário Santi Tattoo</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 <body>
-  <div id="etapa1">
+  <div class="container" id="form-container">
     <h1>Sorteio Genário Santi Tattoo</h1>
     <p>Faça seu cadastro e participe do nosso sorteio totalmente gratuito.</p>
-    <form id="form">
-      <input type="text" name="nome" placeholder="Nome completo" required />
-      <input type="text" name="telefone" placeholder="Telefone" required />
-      <input type="text" name="instagram" placeholder="Instagram" required />
-      <input type="text" name="cpf" placeholder="CPF" required />
-      <small>* Caso ganhe, será necessário enviar foto do CPF e comprovar dados</small><br/>
+    <form id="cadastro-form">
+      <input type="text" id="nome" placeholder="Nome completo" required />
+      <input type="tel" id="telefone" placeholder="Telefone" required />
+      <input type="text" id="instagram" placeholder="Instagram" required />
+      <input type="text" id="cpf" placeholder="CPF" required />
       <button type="submit">Avançar</button>
     </form>
   </div>
 
-  <div id="etapa2" style="display: none;">
-    <h2 id="tituloEtapa2">Escolha seu número:</h2>
-    <div id="numerosContainer"></div>
-    <div id="mensagemFinal"></div>
+  <div class="container hidden" id="numero-container">
+    <h2>Escolha seu número</h2>
+    <div id="numeros"></div>
   </div>
 
+  <div class="container hidden" id="confirmacao-container">
+    <h2>Parabéns, você está participando do sorteio!</h2>
+    <div id="numero-escolhido"></div>
+    <p class="boa-sorte">Boa sorte!</p>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
