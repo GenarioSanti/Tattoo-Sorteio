@@ -2,17 +2,16 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Sorteio Genário Santi Tattoo</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 <body>
-  <h1>Sorteio Genário Santi Tattoo</h1>
-  <p>Faça seu cadastro e participe do nosso sorteio totalmente gratuito.</p>
-
   <div id="etapa1">
+    <h1>Sorteio Genário Santi Tattoo</h1>
+    <p>Faça seu cadastro e participe do nosso sorteio totalmente gratuito.</p>
     <form id="form">
       <input type="text" name="nome" placeholder="Nome completo" required />
       <input type="text" name="telefone" placeholder="Telefone" required />
@@ -24,8 +23,9 @@
   </div>
 
   <div id="etapa2" style="display: none;">
-    <h2>Escolha seu número:</h2>
+    <h2 id="tituloEtapa2">Escolha seu número:</h2>
     <div id="numerosContainer"></div>
+    <div id="mensagemFinal"></div>
   </div>
 
   <script src="script.js"></script>
