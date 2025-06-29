@@ -85,7 +85,10 @@ function gerarNumeros(participante) {
         });
         numerosContainer.innerHTML = "";
         tituloEtapa2.style.display = "none";
-        mensagemFinal.innerHTML = `<div class="animacao-sucesso">Número ${i} escolhido com sucesso!</div>`;
+        mensagemFinal.innerHTML = `
+          <div class="parabens">Parabéns, você está participando do sorteio!</div>
+          <div class="numeroEscolhido">${i}</div>
+          <div class="boasorte">Boa sorte!</div>`;
       });
 
       numerosContainer.appendChild(btn);
