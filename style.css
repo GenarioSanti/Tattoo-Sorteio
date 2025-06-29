@@ -7,29 +7,32 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   overflow-x: hidden;
+  padding: 10px;
 }
 
 .container {
   text-align: center;
-  max-width: 90%;
-  margin: auto;
+  max-width: 500px;
+  width: 100%;
 }
 
 input, button {
   display: block;
   margin: 10px auto;
-  padding: 10px;
+  padding: 12px;
   width: 90%;
-  max-width: 300px;
+  max-width: 400px;
   font-size: 16px;
+  border-radius: 6px;
+  border: none;
 }
 
 button {
   background-color: #4CAF50;
   color: white;
-  border: none;
+  font-weight: bold;
   cursor: pointer;
 }
 
@@ -75,6 +78,29 @@ button:hover {
 
 .boa-sorte {
   font-size: 24px;
+}
+
+.upload-section {
+  background: #222;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+.upload-section p,
+.upload-section a,
+.upload-section label {
+  font-size: 14px;
+  text-align: left;
+  margin: 5px 0;
+}
+
+.insta-link {
+  color: #00bfff;
+  font-weight: bold;
+  display: block;
+  margin: 10px 0;
+  text-align: center;
 }
 
 @keyframes pulse {
