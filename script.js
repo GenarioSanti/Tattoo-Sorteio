@@ -1,12 +1,11 @@
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCTmbYEko-qYaLpX_N4RrZzDy8w76G9pC4",
-  authDomain: "sorteio-tattoo-gratis.firebaseapp.com",
-  databaseURL: "https://sorteio-tattoo-gratis-default-rtdb.firebaseio.com",
-  projectId: "sorteio-tattoo-gratis",
-  storageBucket: "sorteio-tattoo-gratis.appspot.com",
-  messagingSenderId: "278546007465",
-  appId: "1:278546007465:web:de17398bc72da535fb70b8"
+  apiKey: "AIzaSyDedaUYgNzWIwZJx8q47zTrxfYaBZoiyZA",
+  authDomain: "sorteio-tattoo-896cc.firebaseapp.com",
+  projectId: "sorteio-tattoo-896cc",
+  storageBucket: "sorteio-tattoo-896cc.firebasestorage.app",
+  messagingSenderId: "614182873504",
+  appId: "1:614182873504:web:72152debf3cab346a55cc5"
 };
 
 firebase.initializeApp(firebaseConfig);
