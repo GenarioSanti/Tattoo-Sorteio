@@ -1,81 +1,115 @@
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDedaUYgNzWIwZJx8q47zTrxfYaBZoiyZA",
-  authDomain: "sorteio-tattoo-896cc.firebaseapp.com",
-  projectId: "sorteio-tattoo-896cc",
-  storageBucket: "sorteio-tattoo-896cc.firebasestorage.app",
-  messagingSenderId: "614182873504",
-  appId: "1:614182873504:web:72152debf3cab346a55cc5"
-};
+const database = {}; // simulação local do Firebase (em uso real seria substituído)
+let checks = { check1: false, check2: false };
+let dadosUsuario = {};
+let numeroEscolhido = null;
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const storage = firebase.storage();
+function validarCPF(cpf) {
+  cpf = cpf.replace(/[^\d]+/g,'');
+  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+  let soma = 0;
+  for (let i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i)) * (10 - i);
+  let resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  if (resto !== parseInt(cpf.charAt(9))) return false;
+  soma = 0;
+  for (let i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i)) * (11 - i);
+  resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  return resto === parseInt(cpf.charAt(10));
+}
 
-const form = document.getElementById("cadastro-form");
-const formContainer = document.getElementById("form-container");
-const numeroContainer = document.getElementById("numero-container");
-const confirmacaoContainer = document.getElementById("confirmacao-container");
-const numerosDiv = document.getElementById("numeros");
-const numeroEscolhidoDiv = document.getElementById("numero-escolhido");
-
-form.addEventListener("submit", async function(e) {
-  e.preventDefault();
-
+function irParaRegras() {
   const nome = document.getElementById("nome").value.trim();
   const telefone = document.getElementById("telefone").value.trim();
   const instagram = document.getElementById("instagram").value.trim();
   const cpf = document.getElementById("cpf").value.trim();
-  const fotoFile = document.getElementById("foto").files[0];
 
-  if (!nome || !telefone || !instagram || !cpf || !fotoFile) {
-    alert("Preencha todos os campos e envie a foto do print.");
+  if (!nome || !telefone || !instagram || !cpf) {
+    alert("Preencha todos os campos.");
     return;
   }
 
-  const storageRef = storage.ref(`comprovantes/${telefone}_${Date.now()}.jpg`);
-  const uploadTask = await storageRef.put(fotoFile);
-  const imageUrl = await uploadTask.ref.getDownloadURL();
-
-  const participante = { nome, telefone, instagram, cpf, comprovante: imageUrl };
-
-  const check = async (field, value) => {
-    const snap = await db.ref("participantes").orderByChild(field).equalTo(value).once("value");
-    return snap.exists();
-  };
-
-  if (await check("telefone", telefone) || await check("instagram", instagram) || await check("cpf", cpf)) {
-    alert("Telefone, Instagram ou CPF já usados.");
+  if (!validarCPF(cpf)) {
+    alert("CPF inválido.");
     return;
   }
 
-  formContainer.classList.add("hidden");
-  numeroContainer.classList.remove("hidden");
-  carregarNumeros(participante);
-});
-
-function carregarNumeros(dados) {
-  numerosDiv.innerHTML = "";
-  db.ref("participantes").once("value", snapshot => {
-    let ocupados = {};
-    snapshot.forEach(child => ocupados[child.val().numero] = true);
-
-    for (let i = 1; i <= 100; i++) {
-      const btn = document.createElement("div");
-      btn.classList.add("numero");
-      btn.textContent = i;
-      if (ocupados[i]) {
-        btn.classList.add("ocupado");
-      } else {
-        btn.addEventListener("click", () => {
-          const novoRef = db.ref("participantes").push();
-          novoRef.set({ ...dados, numero: i });
-          numeroContainer.classList.add("hidden");
-          confirmacaoContainer.classList.remove("hidden");
-          numeroEscolhidoDiv.textContent = i;
-        });
-      }
-      numerosDiv.appendChild(btn);
+  // Simulação de verificação de duplicidade
+  for (let key in database) {
+    const dados = database[key];
+    if (dados.cpf === cpf || dados.telefone === telefone || dados.instagram === instagram) {
+      alert("Você já está cadastrado com essas informações.");
+      return;
     }
-  });
+  }
+
+  dadosUsuario = { nome, telefone, instagram, cpf };
+
+  document.getElementById("form-screen").classList.remove("active");
+  document.getElementById("regras-screen").classList.add("active");
+}
+
+function seguir(url, checkId) {
+  window.open(url, "_blank");
+  const span = document.getElementById(checkId);
+  span.innerText = "⏳";
+  setTimeout(() => {
+    span.innerText = "✅";
+    checks[checkId] = true;
+    verificarChecks();
+  }, 10000);
+}
+
+function verificarChecks() {
+  if (checks.check1 && checks.check2) {
+    document.getElementById("continuarBtn").disabled = false;
+  }
+}
+
+function irParaNumeros() {
+  document.getElementById("regras-screen").classList.remove("active");
+  document.getElementById("numero-screen").classList.add("active");
+  carregarNumeros();
+}
+
+function carregarNumeros() {
+  const container = document.getElementById("numeros");
+  container.innerHTML = "";
+  for (let i = 1; i <= 100; i++) {
+    const btn = document.createElement("button");
+    btn.innerText = i;
+    btn.className = "numero";
+    btn.onclick = () => selecionarNumero(i, btn);
+    if (Object.values(database).some(user => user.numero === i)) {
+      btn.disabled = true;
+      btn.classList.add("selecionado");
+    }
+    container.appendChild(btn);
+  }
+}
+
+function selecionarNumero(numero, botao) {
+  if (numeroEscolhido !== null) return; // só um número
+  numeroEscolhido = numero;
+  botao.disabled = true;
+  botao.classList.add("selecionado");
+
+  const finalizarBtn = document.createElement("button");
+  finalizarBtn.innerText = "Finalizar Participação";
+  finalizarBtn.onclick = finalizarCadastro;
+  finalizarBtn.className = "finalizar";
+  document.getElementById("numero-screen").appendChild(finalizarBtn);
+}
+
+function finalizarCadastro() {
+  dadosUsuario.numero = numeroEscolhido;
+  database[dadosUsuario.cpf] = dadosUsuario; // salvar simulado
+
+  const tela = document.getElementById("numero-screen");
+  tela.innerHTML = `
+    <h2>Parabéns!</h2>
+    <p>Você está participando com o número <strong>${numeroEscolhido}</strong>.</p>
+    <p>Boa sorte! 🍀</p>
+  `;
 }
