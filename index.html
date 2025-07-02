@@ -25,8 +25,25 @@
       <h2>Regras do Sorteio</h2>
       <ol>
         <li>
-          Compartilhe uma publicação do perfil <strong>@genariosantitattoo</strong> nos seus stories com uma frase positiva.
+          <strong style='color: #ff5252;'>📢 IMPORTANTE:</strong> Compartilhe uma publicação do perfil <strong>@genariosantitattoo</strong> nos seus stories <strong>com uma mensagem positiva</strong> para validar sua participação.
         </li>
+  <button onclick="mostrarAjuda()" style="margin-top: 10px;">❓ Como compartilhar nos stories</button>
+  <div id="ajuda-container" style="display: none; margin-top: 10px; background: #222; padding: 15px; border-radius: 8px;">
+    <p><strong>📌 Passo a passo:</strong></p>
+    <ol>
+      <li>Entre no perfil <a href="https://instagram.com/genariosantitattoo" target="_blank">@genariosantitattoo</a></li>
+      <li>Escolha uma publicação que mais te agrada</li>
+      <li>Toque no botão de compartilhar e selecione <strong>"Adicionar publicação ao seu story"</strong></li>
+      <li>Adicione uma frase positiva de elogio</li>
+    </ol>
+    <p><strong>💬 Exemplos de frases:</strong></p>
+    <ul>
+      <li>“Trabalho incrível! 👏🔥”</li>
+      <li>“Quero muito ganhar essa tattoo! 💉❤️”</li>
+      <li>“Sigo e recomendo de olhos fechados!”</li>
+    </ul>
+  </div>
+
         <li>
           Siga o perfil <strong>@genarioartes</strong><br/>
           <button onclick="seguir('https://instagram.com/genarioartes', 'check1')">Seguir @genarioartes</button>
@@ -38,7 +55,13 @@
           <span id="check2" class="checkmark"></span>
         </li>
       </ol>
-      <button id="continuarBtn" onclick="irParaNumeros()" disabled>Próximo</button>
+      
+    <button id="continuarBtn" onclick="mostrarConfirmacao()" disabled>Próximo</button>
+    <div id="confirmacao-container" style="display: none; text-align: center; margin-top: 20px;">
+      <p style="font-weight: bold; color: yellow;">📲 Você compartilhou nos stories com uma mensagem positiva?</p>
+      <button onclick="confirmarCompartilhamento()">Sim, compartilhei!</button>
+    </div>
+    
     </div>
 
     <!-- Tela 3 - Números -->
