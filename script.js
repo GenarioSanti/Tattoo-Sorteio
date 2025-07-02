@@ -34,7 +34,6 @@ function irParaRegras() {
     return;
   }
 
-  
   firebase.database().ref("usuarios").once("value", snapshot => {
     const dados = snapshot.val() || {};
     for (let key in dados) {
@@ -50,14 +49,6 @@ function irParaRegras() {
     document.getElementById("form-screen").classList.remove("active");
     document.getElementById("regras-screen").classList.add("active");
   });
-  return;
-
-  }
-
-  dadosUsuario = { nome, telefone, instagram, cpf };
-
-  document.getElementById("form-screen").classList.remove("active");
-  document.getElementById("regras-screen").classList.add("active");
 }
 
 function seguir(url, checkId) {
@@ -83,7 +74,6 @@ function irParaNumeros() {
   carregarNumeros();
 }
 
-
 function carregarNumeros() {
   const container = document.getElementById("numeros");
   container.innerHTML = "";
@@ -101,18 +91,6 @@ function carregarNumeros() {
       container.appendChild(btn);
     }
   });
-}
-  for (let i = 1; i <= 100; i++) {
-    const btn = document.createElement("button");
-    btn.innerText = i;
-    btn.className = "numero";
-    btn.onclick = () => selecionarNumero(i, btn);
-    if (Object.values(database).some(user => user.numero === i)) {
-      btn.disabled = true;
-      btn.classList.add("selecionado");
-    }
-    container.appendChild(btn);
-  }
 }
 
 function selecionarNumero(numero, botao) {
