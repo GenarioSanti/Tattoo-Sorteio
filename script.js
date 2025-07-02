@@ -131,3 +131,19 @@ function finalizarCadastro() {
     console.error("Erro inesperado:", err);
   }
 }
+
+function mostrarConfirmacao() {
+  document.getElementById("confirmacao-container").style.display = "block";
+  document.getElementById("continuarBtn").style.display = "none";
+}
+
+function confirmarCompartilhamento() {
+  irParaNumeros();
+}
+
+function mostrarAjuda() {
+  const ajuda = document.getElementById("ajuda-container");
+  if (ajuda) {
+    ajuda.style.display = ajuda.style.display === "none" ? "block" : "none";
+  }
+}
