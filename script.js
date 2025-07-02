@@ -107,13 +107,27 @@ function selecionarNumero(numero, botao) {
 }
 
 function finalizarCadastro() {
-  dadosUsuario.numero = numeroEscolhido;
-  firebase.database().ref("usuarios/" + dadosUsuario.cpf).set(dadosUsuario);
+  try {
+    dadosUsuario.numero = numeroEscolhido;
+    const finalizarBtn = document.querySelector(".finalizar");
+    if (finalizarBtn) finalizarBtn.disabled = true;
 
-  const tela = document.getElementById("numero-screen");
-  tela.innerHTML = `
-    <h2>Parabéns!</h2>
-    <p>Você está participando com o número <strong>${numeroEscolhido}</strong>.</p>
-    <p>Boa sorte! 🍀</p>
-  `;
+    firebase.database().ref("usuarios/" + dadosUsuario.cpf).set(dadosUsuario)
+      .then(() => {
+        const tela = document.getElementById("numero-screen");
+        tela.innerHTML = `
+          <h2>Parabéns!</h2>
+          <p>Você está participando com o número <strong>${numeroEscolhido}</strong>.</p>
+          <p>Boa sorte! 🍀</p>
+        `;
+      })
+      .catch(error => {
+        alert("Erro ao salvar sua participação. Verifique sua conexão ou tente novamente.");
+        console.error("Erro Firebase:", error);
+        if (finalizarBtn) finalizarBtn.disabled = false;
+      });
+  } catch (err) {
+    alert("Ocorreu um erro inesperado.");
+    console.error("Erro inesperado:", err);
+  }
 }
