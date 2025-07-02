@@ -1,24 +1,4 @@
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getFirestore, collection, getDocs, query, where, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCTmbYEko-qYaLpX_N4RrZzDy8w76G9pC4",
-  authDomain: "sorteio-tattoo-gratis.firebaseapp.com",
-  databaseURL: "https://sorteio-tattoo-gratis-default-rtdb.firebaseio.com",
-  projectId: "sorteio-tattoo-gratis",
-  storageBucket: "sorteio-tattoo-gratis.firebasestorage.app",
-  messagingSenderId: "278546007465",
-  appId: "1:278546007465:web:de17398bc72da535fb70b8",
-  measurementId: "G-X0BLWX5559"
-};
-
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-
 const database = {}; // simulação local do Firebase (em uso real seria substituído)
 let checks = { check1: false, check2: false };
 let dadosUsuario = {};
@@ -55,34 +35,7 @@ function irParaRegras() {
     return;
   }
 
-  
-// Verifica duplicidade com o Firestore
-const participantesRef = collection(db, "participantes");
-
-const q = query(participantesRef,
-  where("cpf", "==", cpf),
-  where("telefone", "==", telefone),
-  where("instagram", "==", instagram.toLowerCase())
-);
-const querySnapshot = await getDocs(participantesRef);
-
-for (const docSnap of querySnapshot.docs) {
-  const dados = docSnap.data();
-  if (dados.cpf === cpf || dados.telefone === telefone || dados.instagram.toLowerCase() === instagram.toLowerCase()) {
-    alert("Você já está participando com essas informações.");
-    return;
-  }
-}
-
-// Se passou na validação, salva os dados
-await addDoc(participantesRef, {{
-  nome,
-  telefone,
-  instagram: instagram.toLowerCase(),
-  cpf,
-  numero
-}});
-
+  // Simulação de verificação de duplicidade
   for (let key in database) {
     const dados = database[key];
     if (dados.cpf === cpf || dados.telefone === telefone || dados.instagram === instagram) {
